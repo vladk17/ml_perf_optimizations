@@ -1,6 +1,9 @@
 
 # Performance Optimizations in ML
 
+PURPOSE: PRIVATE USE<br>
+STATUS:  VERY INITIAL DRAFT
+
 ## Abstract:
 TBD
 
@@ -26,7 +29,10 @@ TBD
     * [12.4 Image Segmentation](#section12.4)
 * [NVIDIA's TensorRT](#section13)
 
-Here I am going to focus on performance optimizations of machine learning models<br>
+Here I am going to collect the information on performance optimizations of machine learning models<br>
+
+I am not going to limit myself by any specific machine learning model. I will start with CNNs but is also planning to consider RNNs/LSTMs (deep learning models) on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
+
 In addition to occuracy of the model, we are considering the model size, power consumption, etc... TBD<br>
 
 The question that we are going to concider is what is the minimal model for a given occuracy level. 
@@ -64,35 +70,55 @@ Look also at [DawnBench - An End-to-End Deep Learning Bemnchmark and Competition
 
 #### x.0 Evolution of CNN Architectures for Classification
 
-|name             |                  |        
-|---------------- | -----------------| ------- 
-|LeNet5           |(1989, LeCun)     | ["Gradient-based learning applied to document recognition"](http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf)
-|AlexNet          |(2012, krizhevsky)|["ImageNet Classification with Deep Convolutional Neural Networks"](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf) 
-|VGG16/19         |(2014, Symonyan)  |["Very Deep Convolutional Networks for Large-Scale Image Recognition"](https://arxiv.org/abs/1409.1556) 
-|GoogLeNet        |(2014, Szegedy)   |["Going deeper with convolutions"](https://arxiv.org/abs/1409.4842) 
-|Inception V1-V3  |(2015, Szegedy)   |["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift"](https://arxiv.org/abs/1502.03167)<br>, ["Rethinking the Inception Architecture for Computer Vision"](https://arxiv.org/abs/1512.00567)
-|Residual Networks|(2016, He)        |["Deep Residual Learning for Image Recognition"](https://arxiv.org/abs/1512.03385) 
-|DenseNet         |(2017, Huang)     |["Densely Connected Convolutional Networks"](https://arxiv.org/abs/1608.06993)
-|ResNeXT          |(2017, Xie)       |["Aggregated Residual Transformations for Deep Neural Networks"](https://arxiv.org/abs/1611.05431)|
-
 ...<br>
 ...
  <table style="width:100%">
   <tr>
-    <th>Firstname</th>
-    <th>Lastname</th>
-    <th>Age</th>
+    <th>name</th>
+    <th>year, author</th>
+    <th>paper</th>
   </tr>
   <tr>
-    <td>Jill</td>
-    <td>Smith</td>
-    <td>50</td>
+    <td>LeNet5</td>
+    <td>(1989, LeCun)</td>
+    <td>["Gradient-based learning applied to document recognition"](http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf)</td>
   </tr>
   <tr>
-    <td>Eve</td>
-    <td>Jackson</td>
-    <td>94</td>
+    <td>AlexNet</td>
+    <td>(2012, krizhevsky)</td>
+    <td>["ImageNet Classification with Deep Convolutional Neural Networks"](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)</td>
   </tr>
+  <tr>
+    <td>VGG16/19</td>
+    <td>(2014, Symonyan)</td>
+    <td>["Very Deep Convolutional Networks for Large-Scale Image Recognition"](https://arxiv.org/abs/1409.1556) </td>
+  </tr>
+  <tr>
+    <td>GoogLeNet</td>
+    <td>(2014, Szegedy)</td>
+    <td>["Going deeper with convolutions"](https://arxiv.org/abs/1409.4842) </td>
+  </tr>
+  <tr>
+    <td>Inception V1-V3</td>
+    <td>(2015, Szegedy)</td>
+    <td>["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift"](https://arxiv.org/abs/1502.03167)<br>, ["Rethinking the Inception Architecture for Computer Vision"](https://arxiv.org/abs/1512.00567)</td>
+  </tr>
+  <tr>
+    <td>Residual Networks</td>
+    <td>(2016, He)</td>
+    <td>["Deep Residual Learning for Image Recognition"](https://arxiv.org/abs/1512.03385) </td>
+  </tr>
+  <tr>
+    <td>DenseNet</td>
+    <td>(2017, Huang)</td>
+    <td>["Densely Connected Convolutional Networks"](https://arxiv.org/abs/1608.06993)</td>
+  </tr>
+  <tr>
+    <td>ResNeXT</td>
+    <td>(2017, Xie)</td>
+    <td>["Aggregated Residual Transformations for Deep Neural Networks"](https://arxiv.org/abs/1611.05431)</td>
+  </tr>
+    
 </table> 
 
 ...<br>
