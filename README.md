@@ -29,7 +29,7 @@ TBD
     * [12.4 Image Segmentation](#section12.4)
 * [NVIDIA's TensorRT](#section13)
 
-Here I am going to collect the information on performance optimizations of machine learning models<br>
+Here I am going to collect notes on performance optimizations of machine learning models<br>
 
 I am not going to limit myself by any specific machine learning model. I will start with CNNs but is also planning to consider RNNs/LSTMs (deep learning models) on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
 
