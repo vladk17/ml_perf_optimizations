@@ -1,61 +1,183 @@
 
-# Performance Optimizations in ML
+# Notes on Performance Optimizations in ML
 
-PURPOSE: PRIVATE USE<br>
+PURPOSE: PRIVATE WORKING NOTES<br>
 STATUS:  VERY INITIAL DRAFT
 
 ## Abstract:
 TBD
 
 ### TOC
-* [0. structured data models (Random Forest, XGBoost) optimizations](#section0)
-* [1. Squeeznet](#section1)
-* [1. LSTM?](#section1)
-* [2. Search for Minimal Representations](#section2)
-* [3. Reverse Engineering of model decision passes](#section3)
-* [4. Introduction to deep learning efficiency by Amir Alush](https://youtu.be/x5C9XnYanLw)
-* [4 Forrest Iandola, CEO of DeepScale. Tips and Tricks for Developing Smaller Neural Nets](https://www.youtube.com/watch?v=N-HnlYlhb18)
-* [5. Second presentation from brodman17, where different models and image processing tasks are presented - compare the models and their sizes](#section5)
-* [6. Reduce Precision (quantization) of Weights and Activations](#section6)
-* [7. ONNX](https://github.com/onnx/onnx)
-* [8 HW/SW co-design](#section8)
-* [9. Symmetries](#section9)
-* [10. Visualizations are the must!](#secrion10)
-* [11. All optical NNs](#section11)
-* [12. Computer Vision Tasks](#section12)
-    * [12.1 Classification](#section12.1)
-    * [12.2 Classification + Localization](#section12.2)
-    * [12.3 Object Detection](#section12.3)
-    * [12.4 Image Segmentation](#section12.4)
-* [NVIDIA's TensorRT](#section13)
+* [1. Introduction](#section1)
+* [2. CNNs](#section2)
+    * [2.1 Champion CNN Architectures for Image Classification Task](#section2.1)
+        * [2.1.1 Model Compressions](#section2.1.1)
+        * [2.1.2 CNN Micro Architecture](#section2.1.2)
+        * [2.1.3 CNN Macro Architecture](#section2.1.3)
+        * [2.1.4 Neural Network Design Space Exploration](#section2.1.4)
+* [3. Small CNNs](#section3)
+    * [3.1 Squeeznet](#section3.1)
+    * [3.2 SqueezeNext](#section3.2)
+    * [3.4 MobileNets](#section3.3)
+    * [3.4 See Also](#section3.4)
+* [4. Other relevant topics](#section4)
+    * [4.1. Search for Minimal Representations](#section4.1)
+    * [4.2. Reverse Engineering of model decision passes](#section4.2)
+        * [4.2.1. Visualizations what CNNs learn](#section4.2.1)
+    * [4.3. "Introduction to deep learning efficiency" by Amir Alush, brodmann17](https://youtu.be/x5C9XnYanLw)
+    * [4.4. "Tips and Tricks for Developing Smaller Neural Nets" by Forrest Iandola, CEO of DeepScale.](https://www.youtube.com/watch?v=N-HnlYlhb18)
+    * [4.5. Second presentation from brodmann17, where different models and image processing tasks are presented - compare the models and their sizes](#section4.5)
+    * [4.6. Reduce Precision (quantization) of Weights and Activations](#section4.6)
+    * [4.7. ONNX](https://github.com/onnx/onnx)
+    * [4.8 HW/SW co-design](#section4.8)
+    * [4.9. Symmetries](#section4.9)    
+    * [4.10. All optical NNs](#section4.10)
+    * [4.11. NVIDIA's TensorRT](#section4.11)
+    * [NVIDIA Deep Learning Accelerator (NVDLA)](http://nvdla.org/)
 
-Here I am going to collect notes on performance optimizations of machine learning models<br>
+<a id='section1'></a>
+## 1. Introduction
 
-I am not going to limit myself by any specific machine learning model. I will start with CNNs but is also planning to consider RNNs/LSTMs (deep learning models) on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
+Here I am planning to collect notes on performance optimizations of machine learning models<br>
 
-In addition to occuracy of the model, we are considering the model size, power consumption, etc... TBD<br>
+I will start with CNNs, but am planning to consider also RNNs/LSTMs on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
 
-The question that we are going to concider is what is the minimal model for a given occuracy level. 
+The performance characteristics of the machine learning models, in addition to occuracy (the main focus in academia), include the model size, power consumption, speed of learning and inference, etc... TBD<br>
 
-Advantages of small models according to [1] are:
+Small model size is a key to improving of other performance characteristics of a model [1]:
 1. Smaller CNNs require less communication across servers during distributed training.  
 2. Smaller CNNs require less bandwidth to export a new model from the
 cloud to an autonomous car. 
 3. Smaller CNNs are more feasible to deploy on FPGAs and other hardware with limited internal memory. (Fitting the model to internal memory saves tons of energy. Internal memory accesses are few orders of magnitude faster=>faster inference)
 
-## Squeeznet
+The question that we are going to concider is what is the minimal model for a given occuracy level. 
+
+<a id='section2'></a>
+## 2. CNNs
+
+Computer Vision Tasks:
+
+* Classification
+* Classification + Localization
+* Object Detection
+* Image Segmentation
+
+<a id='section2.1'></a>
+### 2.1 Champion CNN Architectures for Image Classification Task
+
+
+ <table style="width:100%">
+  <tr>
+    <th>name</th>
+    <th>year, author</th>
+    <th>paper</th>
+  </tr>
+  <tr>
+    <td>LeNet5</td>
+    <td>(1989, LeCun)</td>
+    <td>
+        <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf">"Gradient-based learning applied to document recognition"</a>
+    </td>
+  </tr>
+  <tr>
+    <td>AlexNet</td>
+    <td>(2012, krizhevsky)</td>
+    <td>
+        <a href = "https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf">"ImageNet Classification with Deep Convolutional Neural Networks"</a>
+    </td>
+  </tr>
+  <tr>
+    <td>VGG16/19</td>
+    <td>(2014, Symonyan)</td>
+    <td>
+        <a href="https://arxiv.org/abs/1409.1556">"Very Deep Convolutional Networks for Large-Scale Image Recognition"</a> 
+     </td>
+  </tr>
+  <tr>
+    <td>GoogLeNet</td>
+    <td>(2014, Szegedy)</td>
+    <td><a href="https://arxiv.org/abs/1409.4842">"Going deeper with convolutions"</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Inception V1-V3</td>
+    <td>(2015, Szegedy)</td>
+    <td>
+        <a href="https://arxiv.org/abs/1502.03167">"Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift"</a><br>
+        <a href="https://arxiv.org/abs/1512.00567">"Rethinking the Inception Architecture for Computer Vision"</a>
+     </td>
+  </tr>
+  <tr>
+    <td>Residual Networks</td>
+    <td>(2016, He)</td>
+    <td>
+        <a href="https://arxiv.org/abs/1512.03385">"Deep Residual Learning for Image Recognition"</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>DenseNet</td>
+    <td>(2017, Huang)</td>
+    <td>
+        <a href="https://arxiv.org/abs/1608.06993">"Densely Connected Convolutional Networks"</a>
+    </td>
+  </tr>
+  <tr>
+    <td>ResNeXT</td>
+    <td>(2017, Xie)</td>
+    <td>
+        <a href="https://arxiv.org/abs/1611.05431">"Aggregated Residual Transformations for Deep Neural Networks"</a>
+    </td>
+  </tr>
+    
+</table> 
+
+<br>
+
+
+<a id='section2.1.1'></a>
+#### 2.1.1 Model Compressions
+TBD
+<a id='section2.1.2'></a>
+#### 2.1.2 CNN Micro Architecture
+TBD<br>
+"We use the term CNN microarchitecture to refer to the particular organization and dimensions of the individual modules"
+
+<a id='section2.1.3'></a>
+#### 2.1.3 CNN Macro Architecture
+TBD<br>
+"While  the  CNN  microarchitecture  refers  to  individual  layers  and  modules,  we  define  the CNN macroarchitecture as the system-level organization of multiple modules into an end-to-end CNN architecture."<br>
+Study impact of depth on occuracy
+
+<a id='section2.1.4'></a>
+#### 2.1.4 Neural Network Design Space Exploration
+"developing automated approaches for finding NN architectures that deliver higher accuracy"
+
+<a id='section3'></a>
+## 3. Small CNNs
+
+<a id='section3.1'></a>
+### 3.1 Squeeznet
+PRESERVING ACCURACY  WITH  FEW PARAMETERS<br>
 https://github.com/DeepScale/SqueezeNet <br>
 SqueezeNet achieves AlexNet-level accuracy on ImageNet with 50x fewer parameters.  Additionally, with model compression techniques, we are able to compress SqueezeNet to less than 0.5MB (510x smaller than AlexNet)
 
-If you like SqueezeNet, you might also like SqueezeNext! ([SqueezeNext paper](https://arxiv.org/abs/1803.10615), [SqueezeNext code](https://github.com/amirgholami/SqueezeNext))
+<a id='section3.2'></a>
+### 3.2 SqueezeNext
+"If you like SqueezeNet, you might also like SqueezeNext!" ([SqueezeNext paper](https://arxiv.org/abs/1803.10615), [SqueezeNext code](https://github.com/amirgholami/SqueezeNext))
 
-See also [MobileNets](https://arxiv.org/abs/1704.04861)
+<a id='section3.3'></a>
+### 3.3 MobileNets
+[MobileNets](https://arxiv.org/abs/1704.04861)
+
+
+<a id='section3.4'></a>
+### 3.4 See Also
 
 See also [Fire SSD: Wide Fire Modules based Single Shot Detector on Edge Device](https://arxiv.org/abs/1806.05363)
 
 See also [What is the Kirin 970's NPU? ](https://www.youtube.com/watch?v=A6ouKQjvSmw)
 
-See also ["Optimal Brain Damage", LerCun et al. 1990](http://yann.lecun.com/exdb/publis/pdf/lecun-90b.pdf)
+See also ["Optimal Brain Damage", LeCun et al. 1990](http://yann.lecun.com/exdb/publis/pdf/lecun-90b.pdf)
 
 See also ["Designing Energy-Efficient Convolutional Neural Networks using Energy-Aware Prunning", Yang et al. 2017](https://arxiv.org/abs/1611.05128)
 
@@ -66,97 +188,26 @@ See also ["EIE efficient inference engine on compressed deep neural network", Ha
 
 Look also at [DawnBench - An End-to-End Deep Learning Bemnchmark and Competition](https://dawn.cs.stanford.edu/benchmark/)
 
-### Related Work
+<a id='section4'></a>
+## 4. Other relevant topics
 
-#### x.0 Evolution of CNN Architectures for Classification
-
-...<br>
-...
- <table style="width:100%">
-  <tr>
-    <th>name</th>
-    <th>year, author</th>
-    <th>paper</th>
-  </tr>
-  <tr>
-    <td>LeNet5</td>
-    <td>(1989, LeCun)</td>
-    <td>["Gradient-based learning applied to document recognition"](http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf)</td>
-  </tr>
-  <tr>
-    <td>AlexNet</td>
-    <td>(2012, krizhevsky)</td>
-    <td>["ImageNet Classification with Deep Convolutional Neural Networks"](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)</td>
-  </tr>
-  <tr>
-    <td>VGG16/19</td>
-    <td>(2014, Symonyan)</td>
-    <td>["Very Deep Convolutional Networks for Large-Scale Image Recognition"](https://arxiv.org/abs/1409.1556) </td>
-  </tr>
-  <tr>
-    <td>GoogLeNet</td>
-    <td>(2014, Szegedy)</td>
-    <td>["Going deeper with convolutions"](https://arxiv.org/abs/1409.4842) </td>
-  </tr>
-  <tr>
-    <td>Inception V1-V3</td>
-    <td>(2015, Szegedy)</td>
-    <td>["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift"](https://arxiv.org/abs/1502.03167)<br>, ["Rethinking the Inception Architecture for Computer Vision"](https://arxiv.org/abs/1512.00567)</td>
-  </tr>
-  <tr>
-    <td>Residual Networks</td>
-    <td>(2016, He)</td>
-    <td>["Deep Residual Learning for Image Recognition"](https://arxiv.org/abs/1512.03385) </td>
-  </tr>
-  <tr>
-    <td>DenseNet</td>
-    <td>(2017, Huang)</td>
-    <td>["Densely Connected Convolutional Networks"](https://arxiv.org/abs/1608.06993)</td>
-  </tr>
-  <tr>
-    <td>ResNeXT</td>
-    <td>(2017, Xie)</td>
-    <td>["Aggregated Residual Transformations for Deep Neural Networks"](https://arxiv.org/abs/1611.05431)</td>
-  </tr>
-    
-</table> 
-
-...<br>
-...
-
-
-
-#### x.1 model Compression
-TBD
-#### x.2 CNN Micro Architecture
-TBD<br>
-"We use the term CNN microarchitecture to refer to the particular organization and dimensions of the individual modules"
-#### x.3 CNN Macro Architecture
-TBD<br>
-"While  the  CNN  microarchitecture  refers  to  individual  layers  and  modules,  we  define  the CNN macroarchitecture as the system-level organization of multiple modules into an end-to-end CNN architecture."<br>
-Study impact of depth on occuracy
-#### x.4 Neural Network Design Space Exploration
-"developing automated approaches for finding NN architectures that deliver higher accuracy"
-
-### 3. SQUEEZE NET: PRESERVING ACCURACY  WITH  FEW PARAMETERS
-
-### Search for Minimal Representations
+<a id='section4.1'></a>
+### 4.1. Search for Minimal Representations
 [Representation Learning: A Review and New Perspectives](https://arxiv.org/abs/1206.5538?context=cs)
 
 [Deep Learning of Representations: Looking Forward](https://arxiv.org/abs/1305.0445)
 
-<a id='section6'></a>
-## 6. Reduce Precision (quantization) of Weights and Activations
+<a id='section4.2'></a>
+## 4.2. Reverse Engineering of model decision passes
 
+<a id='section4.2.1'></a>
+### 4.2.1. Visualizations what CNNs learn
+* Visualizing intermediate activations
+* Visualizing filters 
+* Visualizing heatmaps of activations in an image
 
-
-<a id='section12'></a>
-## 12. Computer Vision Tasks
-
-* Classification
-* Classification + Localization
-* Object Detection
-* Image Segmentation
+<a id='section4.6'></a>
+## 4.6. Reduce Precision (quantization) of Weights and Activations
 
 ## References
 
