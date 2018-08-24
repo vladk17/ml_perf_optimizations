@@ -28,7 +28,7 @@ TBD
     * [4.4. "Tips and Tricks for Developing Smaller Neural Nets" by Forrest Iandola, CEO of DeepScale.](https://www.youtube.com/watch?v=N-HnlYlhb18)
     * [4.5. Second presentation from brodmann17, where different models and image processing tasks are presented - compare the models and their sizes](#section4.5)
     * [4.6. Reduce Precision (quantization) of Weights and Activations](#section4.6)
-    * [4.7. ONNX](https://github.com/onnx/onnx)
+    * [4.7. ONNX](#section4.7)
     * [4.8 HW/SW co-design](#section4.8)
     * [4.9. Symmetries](#section4.9)    
     * [4.10. All optical NNs](#section4.10)
@@ -42,7 +42,9 @@ Here I am planning to collect notes on performance optimizations of machine lear
 
 I will start with CNNs, but am planning to consider also RNNs/LSTMs on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
 
-The performance characteristics of the machine learning models, in addition to occuracy (the main focus in academia), include the model size, power consumption, speed of learning and inference, etc... TBD<br>
+Besides _accuracy_, the performance characteristics of machine learning models include the _model size_, _power consumption_, _speed_ of learning and inference, etc... TBD<br>
+
+Most typical performance limiter is DRAM access bound. Therefore, the general optimization approach is to find a way to reduce the number of DRAM accesses (do more things within registers and within internal memory of a chip).  
 
 Small model size is a key to improving of other performance characteristics of a model [1]:
 1. Smaller CNNs require less communication across servers during distributed training.  
@@ -50,7 +52,7 @@ Small model size is a key to improving of other performance characteristics of a
 cloud to an autonomous car. 
 3. Smaller CNNs are more feasible to deploy on FPGAs and other hardware with limited internal memory. (Fitting the model to internal memory saves tons of energy. Internal memory accesses are few orders of magnitude faster=>faster inference)
 
-The question that we are going to concider is what is the minimal model for a given occuracy level. 
+The question that we are going to address is __what is the minimal model for a given accuracy level__.
 
 <a id='section2'></a>
 ## 2. CNNs
@@ -138,14 +140,14 @@ Computer Vision Tasks:
 #### 2.1.1 Model Compressions
 TBD
 <a id='section2.1.2'></a>
-#### 2.1.2 CNN Micro Architecture
+#### 2.1.2 CNN Micro-Architecture
 TBD<br>
-"We use the term CNN microarchitecture to refer to the particular organization and dimensions of the individual modules"
+"We use the term CNN Micro-Architecture to refer to the particular organization and dimensions of the individual modules"
 
 <a id='section2.1.3'></a>
-#### 2.1.3 CNN Macro Architecture
+#### 2.1.3 CNN Macro-Architecture
 TBD<br>
-"While  the  CNN  microarchitecture  refers  to  individual  layers  and  modules,  we  define  the CNN macroarchitecture as the system-level organization of multiple modules into an end-to-end CNN architecture."<br>
+"While  the  CNN  Micro-Architecture  refers  to  individual  layers  and  modules,  we  define  the CNN Macro-Architecture as the system-level organization of multiple modules into an end-to-end CNN architecture."<br>
 Study impact of depth on occuracy
 
 <a id='section2.1.4'></a>
@@ -198,16 +200,22 @@ Look also at [DawnBench - An End-to-End Deep Learning Bemnchmark and Competition
 [Deep Learning of Representations: Looking Forward](https://arxiv.org/abs/1305.0445)
 
 <a id='section4.2'></a>
-## 4.2. Reverse Engineering of model decision passes
+### 4.2. Reverse Engineering of model decision passes
 
 <a id='section4.2.1'></a>
-### 4.2.1. Visualizations what CNNs learn
+#### 4.2.1. Visualizations what CNNs learn
 * Visualizing intermediate activations
 * Visualizing filters 
 * Visualizing heatmaps of activations in an image
 
 <a id='section4.6'></a>
-## 4.6. Reduce Precision (quantization) of Weights and Activations
+### 4.6. Reduce Precision (quantization) of Weights and Activations
+
+<a id='section4.7'></a>
+### 4.7 ONNX
+Standard for sharing of DNN models<br>
+https://github.com/onnx/onnx <br>
+Export your model to ONNX and the use it for inference on an other platform including mobile etc.
 
 ## References
 
