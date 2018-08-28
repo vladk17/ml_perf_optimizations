@@ -29,10 +29,11 @@ TBD
     * [4.5. Second presentation from brodmann17, where different models and image processing tasks are presented - compare the models and their sizes](#section4.5)
     * [4.6. Reduce Precision (quantization) of Weights and Activations](#section4.6)
     * [4.7. ONNX](#section4.7)
-    * [4.8 HW/SW co-design](#section4.8)
-    * [4.9. Symmetries](#section4.9)    
-    * [4.10. All optical NNs](#section4.10)
-    * [4.11. NVIDIA's TensorRT](#section4.11)
+    * [4.8. TensorRT](#section4.8)    
+    * [4.9 HW/SW co-design](#section4.9)
+    * [4.10. Symmetries](#section4.10)    
+    * [4.11. All optical NNs](#section4.11)
+    * [4.12. NVIDIA's TensorRT](#section4.12)
     * [NVIDIA Deep Learning Accelerator (NVDLA)](http://nvdla.org/)
 
 <a id='section1'></a>
@@ -42,7 +43,7 @@ Here I am planning to collect notes on performance optimizations of machine lear
 
 I will start with CNNs, but am planning to consider also RNNs/LSTMs on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
 
-Besides _accuracy_, the performance characteristics of machine learning models include the _model size_, _power consumption_, _speed_ of learning and inference, etc... TBD<br>
+Besides _accuracy_, the performance characteristics of machine learning models include the _model size_, _power consumption_, _speed_ of learning (forward and backward time) and inference, etc... TBD<br>
 
 Most typical performance limiter is DRAM access bound. Therefore, the general optimization approach is to find a way to reduce the number of DRAM accesses (do more things within registers and within internal memory of a chip).  
 
@@ -136,6 +137,10 @@ Computer Vision Tasks:
 <br>
 
 
+["CNN Architectures" secture from cs231n](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture9.pdf)
+
+["An Analysis of Deep Neural Network Models for Practical Applications" by A. Canziani, A. Paszke, E. Culurciello](https://arxiv.org/pdf/1605.07678.pdf)
+
 <a id='section2.1.1'></a>
 #### 2.1.1 Model Compressions
 TBD
@@ -216,6 +221,8 @@ Look also at [DawnBench - An End-to-End Deep Learning Bemnchmark and Competition
 Standard for sharing of DNN models<br>
 https://github.com/onnx/onnx <br>
 Export your model to ONNX and the use it for inference on an other platform including mobile etc.
+
+pytorch -> ONNX -> caffe2
 
 ## References
 
