@@ -139,7 +139,16 @@ Computer Vision Tasks:
 
 ["CNN Architectures" secture from cs231n](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture9.pdf)
 
+["Efficient Methods and Hardware for Deep Learning" from cs231n](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture15.pdf)
+
 ["An Analysis of Deep Neural Network Models for Practical Applications" by A. Canziani, A. Paszke, E. Culurciello](https://arxiv.org/pdf/1605.07678.pdf)
+
+
+["Fast Algorithms for Convolutional Neural Networks" by Andrew Lavin, Scott Gray](https://arxiv.org/pdf/1509.09308.pdf)
+
+["Distilling the Knowledge in a Neural Network" by Geoffrey Hinton, Oriol Vinyals, Jeff Dean](https://arxiv.org/abs/1503.02531)
+
+>Note: For memory bound workloads CPU may give beter performance than GPU 
 
 <a id='section2.1.1'></a>
 #### 2.1.1 Model Compressions
@@ -215,6 +224,8 @@ Look also at [DawnBench - An End-to-End Deep Learning Bemnchmark and Competition
 
 <a id='section4.6'></a>
 ### 4.6. Reduce Precision (quantization) of Weights and Activations
+
+[Mixed Precision Training](https://docs.nvidia.com/deeplearning/sdk/mixed-precision-training/index.html)
 
 <a id='section4.7'></a>
 ### 4.7 ONNX
