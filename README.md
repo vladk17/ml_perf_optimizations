@@ -148,6 +148,10 @@ Computer Vision Tasks:
 
 ["Distilling the Knowledge in a Neural Network" by Geoffrey Hinton, Oriol Vinyals, Jeff Dean](https://arxiv.org/abs/1503.02531)
 
+["Neural Network Architectures" by Eugenio Culurciello on medium](https://towardsdatascience.com/neural-network-architectures-156e5bad51ba)
+
+["Analysis of deep neural networks" by Eugenio Culurciello on medium](https://medium.com/@culurciello/analysis-of-deep-neural-networks-dcf398e71aae)
+
 >Note: For memory bound workloads CPU may give beter performance than GPU 
 
 <a id='section2.1.1'></a>
