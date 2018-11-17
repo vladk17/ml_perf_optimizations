@@ -40,9 +40,9 @@ TBD
 <a id='section1'></a>
 ## 1. Introduction
 
-Here I am planning to collect my notes on performance optimizations of machine learning models<br>
+Here I am planning to collect notes on performance optimizations of machine learning models<br>
 
-I will start with CNNs, but am planning to consider also RNNs/LSTMs on one side, and "classical" models and approaches, like RandomForest, XGBoost, etc. on the other side.  
+I will start with CNNs, but am planning to consider also RNNs/LSTMs on one side, and "classical" models and approaches, like RandomForest (which is trivially parallelizable), XGBoost, etc. on the other side.  
 
 Besides _accuracy_, the performance characteristics of machine learning models include the _model size_, _power consumption_, _speed_ of learning (forward and backward time) and inference, etc... <br>
 
