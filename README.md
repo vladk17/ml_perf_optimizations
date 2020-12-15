@@ -49,6 +49,8 @@ Besides _accuracy_, the performance characteristics of machine learning models i
 Most typical performance limiter is DRAM access bound. Therefore, the general optimization approach is to find a way to reduce the number of DRAM accesses (do more things within registers and within internal memory of a chip).  
 >(Note however that there are non memory bound workloads that require different types of optimizations) 
 
+Blog-post discussing the question "why is so much memory needed for deep neural networks?" is [here](https://www.graphcore.ai/posts/why-is-so-much-memory-needed-for-deep-neural-networks)<br> 
+
 Small model size is also a key to improving of other performance characteristics of a model [[1]](#ref1):
 1. Smaller CNNs require less communication across servers during distributed training.  
 2. Smaller CNNs require less bandwidth to export a new model from the
