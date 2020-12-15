@@ -50,6 +50,7 @@ Most typical performance limiter is DRAM access bound. Therefore, the general op
 >(Note however that there are non memory bound workloads that require different types of optimizations) 
 
 Blog-post discussing the question "why is so much memory needed for deep neural networks?" is [here](https://www.graphcore.ai/posts/why-is-so-much-memory-needed-for-deep-neural-networks)<br> 
+["Estimating GPU Memory Consumption of Deep Learning Models" by Microsoft research](https://www.microsoft.com/en-us/research/uploads/prod/2020/05/dnnmem.pdf)<br>
 
 Small model size is also a key to improving of other performance characteristics of a model [[1]](#ref1):
 1. Smaller CNNs require less communication across servers during distributed training.  
